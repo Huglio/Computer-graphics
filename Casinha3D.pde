@@ -1,7 +1,30 @@
+class Mola {
+  Casa3D casa;
+  float len = 100;
+  float k = .01;
+  
+  Mola(Casa3D casa) {
+    this.casa = casa; 
+  }
+  
+  void update() {
+    PVector myPos = new PVector(mouseX, mouseY);
+    PVector pos = new PVector(casa.getMiddle().x, casa.getMiddle().y);
+    
+    float x = PVector.dist(myPos, pos);
+    
+    if (x > len) {
+      PVector normal = PVector.sub(myPos, pos);
+      casa.force.add(normal.mult((x - len) * k / frameRate));
+    }
+  }
+}
+
 class Casa3D {
   
   int n;
-  float velocity = .1;
+  PVector vel;
+  PVector force;
   float points[] = {0, 100, 0,
     0, 0, 0,
     100, 0, 0,
@@ -31,6 +54,8 @@ class Casa3D {
 
   Casa3D () {
     n = points.length;
+    vel = new PVector(0, 0);
+    force = new PVector(0, 0);
   }
 
 
@@ -45,19 +70,22 @@ class Casa3D {
   }
   
   void update() {
-    PVector middle = getMiddle();
-    PVector wanted = new PVector(mouseX, mouseY);
+    PVector pos = getMiddle();
     
-    float x_diff = wanted.x - middle.x;
-    float y_diff = wanted.y - middle.y;
-    
-    x_diff /= (n / 3);
-    y_diff /= (n / 3);
+    force.add(0, 10 / frameRate);
+    vel.add(force);
     
     for (int i = 0; i < n; i+=3){
-      points[i] = lerp(points[i], points[i] + x_diff, velocity);
-      points[i + 1] = lerp(points[i + 1], points[i + 1] + y_diff, velocity);
+      points[i] += vel.x / (n / 3);
+      points[i + 1] += vel.y / (n / 3);
     }
+    
+    rotateX(PI/180/frameRate * force.mag());
+    rotateY(PI/180/frameRate * force.mag());
+    rotateZ(PI/180/frameRate * force.mag());
+
+    
+    force = new PVector(0, 0);
   }
 
   PVector getMiddle() {
@@ -144,40 +172,21 @@ class Casa3D {
   }
 }
 
-int casas_qtd = 10;
-ArrayList<Casa3D> casas;
-float vel[];
+int casas_qtd = 1;
+Mola mola;
+Casa3D casa;
 void setup () {
   background(0);
   size(500, 500, P3D);
-  casas = new ArrayList<Casa3D>();
-  vel = new float[casas_qtd];
-
-  for (int i = 0; i < casas_qtd; i++)
-  {
-    Casa3D casa = new Casa3D();
-    casa.translate(random(0, width), random(0, height), random(0, -100000));
-    float aux = random(.2, .5);
-    casa.scale(aux, aux, aux);
-    casas.add(casa);
-    casa.velocity = random(0, 0.01);
-    vel[i] = random(-1, 1);
-  }
+  casa = new Casa3D();
+  mola = new Mola(casa);
+  //casa.translate(random(0, width), random(0, height), 50);
+  //casa.scale(.5, .5, .5);
 }
-
 
 void draw() {
   background(0);
-  for (int i = 0; i < casas.size(); i++) {
-    Casa3D casa = casas.get(i);
-    
-    casa.display();
-    casa.update();
-    casa.rotateY(PI/180 * vel[i]);
-    casa.rotateX(PI/180 * vel[i]);
-    casa.rotateZ(PI/180 * vel[i]);
-    //casa.rotateX(PI/180 / 10);
-    //casa.rotateY(PI/180 / 10);
-    //casa.rotateZ(PI / 180 / 10);
-  }
+  mola.update();
+  casa.display();
+  casa.update();
 }
