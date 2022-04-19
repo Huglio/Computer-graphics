@@ -3,20 +3,20 @@ PImage img;
 class Matrix {
   int n, m;
   
-  double matrix[][];
+  float matrix[][];
   
   Matrix(int n, int m) {
     this.n = n;
     this.m = m;
     
-    matrix = new double[n][m];
+    matrix = new float[n][m];
   }
   
   Matrix(Matrix x) {
     n = x.n;
     m = x.m;
     
-    matrix = new double[n][m];
+    matrix = new float[n][m];
   
     for (int i = 0; i < n; i++)
       for (int j = 0; j < m; j++)
@@ -55,11 +55,22 @@ class Matrix {
       for (int j = 0; j < m; j++)
         matrix[i][j] = random(-5, 5);
   }
+  
+  float sigmoid(float x) {
+    return 1 / (1 + exp(-x));
+  }
+  
+  void sigmoidAll() {
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < m; j++)
+        matrix[i][j] = sigmoid(matrix[i][j]);
+  }
 }
 
 class AIController {
   
   ArrayList<Matrix> Layers;
+  Car car;
   
   AIController (int input_size, int output_size) {
     Layers = new ArrayList<Matrix>();
@@ -76,15 +87,31 @@ class AIController {
   Matrix pred(Matrix input) {
     Matrix resp = new Matrix(input);
     
-    for (int i = 0; i < Layers.size(); i++)
+    for (int i = 0; i < Layers.size(); i++) {
       resp = resp.mult(Layers.get(i));
+      resp.sigmoidAll();
+    }
       
     return resp;
   }
+  
+   Matrix getInput() {
+    Matrix Input = new Matrix(1, 5);
+    
+    Input.matrix[0][0] = car.velocity;
+    Input.matrix[0][1] = car.steering;
+    Input.matrix[0][2] = car.forward.heading();
+    PVector mousePos = new PVector(mouseX, mouseY);
+    Input.matrix[0][3] = mousePos.sub(car.position).heading();
+    Input.matrix[0][4] = mousePos.sub(car.position).mag();
+    
+    return Input;
+  }
+  
 };
 
 
-class car {
+class Car {
   
   float throttle;
   float acceleration;
@@ -100,7 +127,7 @@ class car {
   PVector forward;
   float size = 1;
   
-  car (float x, float y) {
+  Car (float x, float y) {
     position = new PVector(x, y);
     forward = new PVector(1, 0);
     
@@ -148,27 +175,16 @@ class car {
     popMatrix();   
   }
   
-  Matrix getInput() {
-    Matrix Input = new Matrix(1, 5);
-    
-    Input.matrix[0][0] = velocity;
-    Input.matrix[0][1] = steering;
-    Input.matrix[0][2] = forward.heading();
-    PVector mousePos = new PVector(mouseX, mouseY);
-    Input.matrix[0][3] = mousePos.sub(position).heading();
-    Input.matrix[0][4] = mousePos.sub(position).mag();
-    
-    return Input;
-  }
+ 
 }
 
 
-car a;
+Car a;
 
 void setup() {
   size(1000, 1000);
   img = loadImage("car.png");
-  a = new car(250, 250);
+  a = new Car(250, 250);
 }
 
 void draw() {
