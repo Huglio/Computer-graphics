@@ -139,7 +139,6 @@ class car {
   
   void display() {
     imageMode(CENTER);
-    println(forward.heading());
     pushMatrix();
     translate(position.x, position.y);
     rotate(forward.heading());
@@ -147,6 +146,19 @@ class car {
     fill(255, 0, 0);
     //circle(0, 0, 10);
     popMatrix();   
+  }
+  
+  Matrix getInput() {
+    Matrix Input = new Matrix(1, 5);
+    
+    Input.matrix[0][0] = velocity;
+    Input.matrix[0][1] = steering;
+    Input.matrix[0][2] = forward.heading();
+    PVector mousePos = new PVector(mouseX, mouseY);
+    Input.matrix[0][3] = mousePos.sub(position).heading();
+    Input.matrix[0][4] = mousePos.sub(position).mag();
+    
+    return Input;
   }
 }
 
