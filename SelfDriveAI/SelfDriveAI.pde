@@ -1,3 +1,7 @@
+import java.util.*;   
+
+float best_x = 0, best_y = 0;
+
 PImage img;
 
 class Matrix {
@@ -53,7 +57,7 @@ class Matrix {
   void randomise() {
     for (int i = 0; i < n; i++)
       for (int j = 0; j < m; j++)
-        matrix[i][j] = random(-5, 5);
+        matrix[i][j] = random(-1, 1);
   }
   
   float sigmoid(float x) {
@@ -67,47 +71,194 @@ class Matrix {
   }
 }
 
-class AIController {
+class GA {
+  
+  int moves;
+  ArrayList<AIController> Population;
+  
+  GA(int cnt) {
+    Population = new ArrayList<AIController>();
+    
+    for (int i = 0; i < cnt; i++) {
+      Population.add(new AIController());
+      Population.get(i).possess(new Car(250, 250));
+    }
+    
+    moves = 200;
+  }
+  
+  
+  
+  void runGeneration () {
+    
+    if (moves >= 0) {
+      update();
+      display();
+      moves--;
+    } else {  
+      
+      Collections.sort(Population);
+
+      
+      println(Population.get(int(Population.size()) - 1).car.position.x);
+      
+
+      
+      best_x = Population.get(Population.size() - 1).car.position.x;
+      best_y = Population.get(Population.size() - 1).car.position.y;
+      
+      
+      ArrayList<AIController> NewPopulation = new ArrayList<AIController>();
+      
+      for (int i = 0; i < Population.size() - 50; i++)
+        NewPopulation.add(crossOver(Population.get(int(random(0, Population.size()))), Population.get(int(random(0, Population.size())))));
+      
+      for (int i = max(0, Population.size() - 50); i < Population.size(); i++)
+        NewPopulation.add(Population.get(i));
+      
+      Population = NewPopulation;
+      
+      for (int i = 0; i < Population.size(); i++)
+        Population.get(i).possess(new Car(250, 250));
+      
+      println(Population.size());
+      
+      moves = 200;
+    }
+  }
+  
+  AIController crossOver(AIController a, AIController b) {
+    AIController c = new AIController();
+    
+    for (int i = 0; i < c.Layers.size(); i++)
+      for (int x = 0; x < c.Layers.get(i).n; x++)
+        for (int y = 0; y < c.Layers.get(i).m; y++)
+          if (random(0, 1) >= 0.5)
+            c.Layers.get(i).matrix[x][y] = mutateChance(a.Layers.get(i).matrix[x][y]);
+          else
+            c.Layers.get(i).matrix[x][y] = mutateChance(b.Layers.get(i).matrix[x][y]);
+            
+    return c;
+  }
+  
+  float mutateChance(float val) {
+    if (random(0, 1) <= 0.1)
+      return val *= random(-1, 1);
+    return val;
+  }
+  
+  void update() {
+    for (int i = 0; i < Population.size(); i++) {
+      Population.get(i).update();
+      Population.get(i).car.update();
+    }
+  }
+  
+  void display() {
+    for (int i = max(0, Population.size() - 10); i < Population.size(); i++) {
+      Population.get(i).car.display();
+    }
+    
+  }
+}
+
+class AIController implements Comparable<AIController> {
   
   ArrayList<Matrix> Layers;
   Car car;
   
-  AIController (int input_size, int output_size) {
+  AIController () {
     Layers = new ArrayList<Matrix>();
     
-    Layers.add(new Matrix(input_size, 4));
+    Layers.add(new Matrix(5, 4));
     Layers.add(new Matrix(4, 4));
-    Layers.add(new Matrix(4, output_size));
+    Layers.add(new Matrix(4, 4));
     
     for (int i = 0; i < Layers.size(); i++)
       Layers.get(i).randomise();
   }
   
+  void possess(Car a) {
+    this.car = a;
+  }
+  
+  void update() {
+    if (car == null)
+      return;
+    
+    
+    Matrix p = pred(getInput());
+    
+    //0 0 frente
+    //0 1 tras
+    //0 2 direita
+    //0 3 esquerda
+    
+    
+    if (p.matrix[0][0] >= 0.5 && p.matrix[0][1] >= 0.5)
+      car.setThrottle(0);
+    else if (p.matrix[0][0] >= 0.5)
+      car.setThrottle(1);
+    else if (p.matrix[0][1] >= 0.5)
+      car.setThrottle(-1);
+      
+    if (p.matrix[0][2] >= 0.5 && p.matrix[0][3] >= 0.5)
+      car.setSteer(1);
+    else if (p.matrix[0][2] >= 0.5)
+      car.setSteer(1);
+    else if (p.matrix[0][3] >= 0.5)
+      car.setSteer(-1);
+  }
   
   Matrix pred(Matrix input) {
+    
     Matrix resp = new Matrix(input);
+    
     
     for (int i = 0; i < Layers.size(); i++) {
       resp = resp.mult(Layers.get(i));
-      resp.sigmoidAll();
-    }
       
+    }
+  
+    resp.sigmoidAll();
+
     return resp;
   }
   
+  void killMovement() {
+    if (car == null)
+      return;
+    
+    car.velocity = 0;
+    car.setThrottle(0);
+    car.setSteer(0);
+  }
+  
    Matrix getInput() {
+     if (car == null)
+       return new Matrix(0, 0);
+          
     Matrix Input = new Matrix(1, 5);
     
-    Input.matrix[0][0] = car.velocity;
-    Input.matrix[0][1] = car.steering;
-    Input.matrix[0][2] = car.forward.heading();
+    Input.matrix[0][0] = car.velocity / car.max_velocity;
+    Input.matrix[0][1] = car.steering / car.max_steering;
+    Input.matrix[0][2] = car.forward.heading() / (TWO_PI);
     PVector mousePos = new PVector(mouseX, mouseY);
-    Input.matrix[0][3] = mousePos.sub(car.position).heading();
-    Input.matrix[0][4] = mousePos.sub(car.position).mag();
+    Input.matrix[0][3] = mousePos.sub(car.position).heading() / (TWO_PI);
+    Input.matrix[0][4] = mousePos.sub(car.position).mag() / (sqrt(width * width + height * height));
     
     return Input;
   }
   
+  int compareTo(AIController b) {
+    if (car == null)
+      return 0;
+      
+    if (PVector.sub(car.position, new PVector(mouseX, mouseY)).mag() < PVector.sub(b.car.position, new PVector(mouseX, mouseY)).mag())
+      return 1;
+    
+    return -1;
+  }
 };
 
 
@@ -162,6 +313,8 @@ class Car {
     
     forward.rotate(radians(steering * velocity / frameRate));
     position.add(forward.x * velocity, forward.y * velocity);
+    
+    //println(position.x, position.y);
   }
   
   void display() {
@@ -180,17 +333,25 @@ class Car {
 
 
 Car a;
+GA ga;
 
 void setup() {
   size(1000, 1000);
   img = loadImage("car.png");
   a = new Car(250, 250);
+  ga = new GA(500);
 }
 
 void draw() {
   background(0);
   a.update();
   a.display();
+  
+  ga.runGeneration();
+  
+  fill(255, 0, 0);
+  circle(best_x, best_y, 25);
+  circle(0, 0, 25);
 }
 
 void keyPressed() {
