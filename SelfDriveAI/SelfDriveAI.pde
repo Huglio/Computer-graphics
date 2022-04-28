@@ -258,7 +258,7 @@ class GA {
   }
   
   void display() {
-    for (int i = max(0, Population.size() - 10); i < Population.size(); i++) {
+    for (int i = max(0, round(Population.size() * (1 - 0.05))); i < Population.size(); i++) {
       Population.get(i).car.display();
     }
     
