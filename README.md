@@ -1,8 +1,6 @@
 <span style="color:blue"> Some of my projects </span>.
 
-```diff
-+ Physics Playing
-```
+![#00ff00] Test
 
 ![Alt Text](https://github.com/Huglio/Computer-graphics/blob/main/Ball_And_Spring/Ball%20and%20Spring%20Spoiler.gif)
 
