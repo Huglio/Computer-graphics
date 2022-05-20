@@ -93,6 +93,7 @@ void setup () {
   a = new MouseBall();
   b = new Ball();
   x = new Spring(a, b, 100, 1);
+  frameRate(120);
 }
 
 void draw() {
