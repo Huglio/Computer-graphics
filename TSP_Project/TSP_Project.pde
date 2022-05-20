@@ -1,11 +1,12 @@
 
 
-Node x;
 ClearButton clearbutton;
+TSPButton tspbutton;
+TSP tsp;
 void setup() {
   size(500, 500);
-  x = new Node(node_cnt++, new PVector(250, 250));
   clearbutton = new ClearButton(new PVector(10, 10));
+  tspbutton = new TSPButton(new PVector(_clear_button_x_size + 20, 10));
 }
 
 void draw() {
@@ -13,6 +14,11 @@ void draw() {
   
   stroke(10);
   line(0, _control_reserved_space, width, _control_reserved_space);
+  
+  if (tsp != null) {
+    tsp.step();
+    tsp.display();
+  }
   
   world.update();
   world.display();
@@ -22,19 +28,16 @@ void draw() {
 }
 
 
-
-
-
-
 // Checks if mouse is hovering button
 boolean isCheckingHovering = false;
 void checkHovering() {
   isCheckingHovering = true;
   
-  for (Button x : world.buttons) {
-    if (x.isInside(new PVector(mouseX, mouseY)))
+  for (int i = 0; i < world.buttons.size(); i++) {
+    Button x = world.buttons.get(i);
+    if (x != null && x.isInside(new PVector(mouseX, mouseY)))
       x.hover();
-    else if (x.isHovered)
+    else
       x.unhover();
   }
   
@@ -60,4 +63,10 @@ void mouseReleased() {
       return;
     }
   }
+}
+
+
+void keyPressed() {
+  if (tsp != null)
+    tsp.step();
 }

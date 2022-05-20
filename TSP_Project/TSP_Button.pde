@@ -1,15 +1,13 @@
-class ClearButton extends Button {
-  ClearButton(PVector pos) {
+class TSPButton extends Button{
+  TSPButton(PVector pos) {
     super(pos);
-    
-    world.addButton(this);
   }
   
   void destroy() {
     super.destroy();
   }
   
-  void display() {
+   void display() {
     
     if (isHovered) {
       stroke(200, 50, 50);
@@ -18,7 +16,7 @@ class ClearButton extends Button {
       textSize(20);
       fill(200, 100, 100);
       textAlign(CENTER, CENTER);
-      text("Clear nodes", pos.x + (_clear_button_x_size / 2), pos.y + (_clear_button_y_size / 2) - 4);
+      text("Run TSP", pos.x + (_clear_button_x_size / 2), pos.y + (_clear_button_y_size / 2) - 4);
     } else {
       stroke(200);
       fill(0);
@@ -26,16 +24,12 @@ class ClearButton extends Button {
       textSize(20);
       fill(200);
       textAlign(CENTER, CENTER);
-      text("Clear nodes", pos.x + (_clear_button_x_size / 2), pos.y + (_clear_button_y_size / 2) - 4);
+      text("Run TSP", pos.x + (_clear_button_x_size / 2), pos.y + (_clear_button_y_size / 2) - 4);
     }
   }
   
   void click() {
-    while(world.nodes.size() > 0)
-      world.nodes.get(0).destroy();
-    
-    tsp = null;
-    node_cnt = 0;
+    tsp = new TSP();
   }
   
   void update() {
