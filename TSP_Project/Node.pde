@@ -29,9 +29,13 @@ class Node extends Button {
     pos.y = min(height - _node_max_size / 2, pos.y);
   }
   
+  boolean isHighlighted = false;
   void display() {
     strokeWeight(2);
-    stroke(200);
+    if (isHighlighted)
+      stroke(_run_animation_color);
+    else
+      stroke(200);
     fill(0);
     circle(pos.x, pos.y, _node_size * scale);
     textSize(20 * scale);

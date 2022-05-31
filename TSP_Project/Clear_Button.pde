@@ -1,12 +1,6 @@
 class ClearButton extends Button {
   ClearButton(PVector pos) {
     super(pos);
-    
-    world.addButton(this);
-  }
-  
-  void destroy() {
-    super.destroy();
   }
   
   void display() {

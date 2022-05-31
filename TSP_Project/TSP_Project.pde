@@ -1,16 +1,27 @@
-
+import java.io.*;
+import java.util.*;
 
 ClearButton clearbutton;
 TSPButton tspbutton;
+RandomButton randombutton;
 TSP tsp;
+
 void setup() {
   size(500, 500);
+  fullScreen(1);
   clearbutton = new ClearButton(new PVector(10, 10));
   tspbutton = new TSPButton(new PVector(_clear_button_x_size + 20, 10));
+  randombutton = new RandomButton(new PVector(_clear_button_x_size * 2 + 30, 10));
+  
 }
 
 void draw() {
   background(0);
+  
+  fill(5);
+  textSize(300);
+  textAlign(CENTER, CENTER);
+  text("Click to add", width / 2, height / 2);
   
   stroke(10);
   line(0, _control_reserved_space, width, _control_reserved_space);
@@ -18,6 +29,15 @@ void draw() {
   if (tsp != null) {
     tsp.step();
     tsp.display();
+    fill(200);
+    textSize(20);
+    textAlign(CENTER, BOTTOM);
+    text("TSP fit: " + str(tsp.fit(tsp.solution)), width / 2, _control_reserved_space);
+    
+    textSize(20);
+    textAlign(CENTER, BOTTOM);
+    text(Arrays.toString(tsp.solution), width / 2, _control_reserved_space + 20);
+    
   }
   
   world.update();
@@ -37,7 +57,7 @@ void checkHovering() {
     Button x = world.buttons.get(i);
     if (x != null && x.isInside(new PVector(mouseX, mouseY)))
       x.hover();
-    else
+    else if (x != null)
       x.unhover();
   }
   
