@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:grid x="0" y="1.707" width="45.068" height="35.538"/>
+    <view id="view-1" viewBox="-90.136 -319.842 180.272 321.549">
+      <title>View 1</title>
+    </view>
+  </defs>
+  <rect x="-53.115" y="-307.518" width="102.019" height="86.883" style="fill: none; fill-rule: nonzero; paint-order: fill; stroke: rgb(0, 0, 0); stroke-width: 3px; stroke-linejoin: round; stroke-dashoffset: -2px;"/>
+  <rect x="-46.668" y="-301.072" width="89.126" height="62.22" style="fill: none; fill-rule: nonzero; paint-order: fill; stroke: rgb(0, 0, 0); stroke-width: 3px; stroke-linejoin: round; stroke-dashoffset: -2px;"/>
+  <rect x="-29.291" y="-220.355" width="57.735" height="10.089" style="stroke: rgb(0, 0, 0); fill: none; stroke-linejoin: round; stroke-width: 3px;"/>
+  <rect x="-6.87" y="-209.704" width="12.892" height="178.812" style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;"/>
+  <rect x="-15.277" y="-137.894" width="29.148" height="62.78" style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 3px;"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 2px; fill: none;" cx="-40.782" cy="-229.386" rx="3.083" ry="2.803"/>
+  <rect x="-22.004" y="-173.27" width="42.601" height="10.651" style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: rgb(255, 255, 255);"/>
+  <rect x="-64.044" y="-30.831" width="127.242" height="11.771" style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: none;"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: none;" cx="-54.597" cy="-9.249" rx="9.529" ry="9.249"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: none;" cx="54.597" cy="-9.249" rx="9.529" ry="9.249"/>
+</svg>
