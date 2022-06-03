@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-207.865 -300 407.865 300" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-172.532" y="-39.296" width="354.034" height="14.497" style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: none;" cx="-158.798" cy="-12.972" rx="12.208" ry="11.827"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: none;" cx="167.005" cy="-11.827" rx="12.208" ry="11.827"/>
+  <polyline style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;" points="-81.734 -39.295 -133.618 -98.81 -116.069 -98.81 -61.896 -39.295"/>
+  <polyline style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;" points="107.491 -39.295 55.607 -98.81 73.156 -98.81 127.329 -39.295"/>
+  <rect x="43.017" y="-114.451" width="41.965" height="16.023" style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;"/>
+  <rect x="-145.826" y="-114.833" width="41.965" height="16.023" style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;"/>
+  <rect x="-200" y="-124.752" width="397.525" height="9.919" style="stroke: rgb(0, 0, 0); stroke-width: 3px; fill: none;"/>
+  <rect x="-200" y="-220.891" width="16.786" height="96.138" style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;"/>
+  <polygon style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 3px;" points="-183.005 -202.594 -183.005 -176.169 -87.393 -125.24 143.708 -124.759 143.708 -143.978 -84.991 -148.782"/>
+</svg>
