@@ -4,6 +4,8 @@ class Object {
     float rot;
 
     boolean render = true;
+    
+    Object parent;
 
     Object(PVector pos, float rot) {
         world.objects.add(this);
@@ -21,6 +23,10 @@ class Object {
     }
     
     void update() {
+        
+    }
+    
+    void getPosition() {
         
     }
 }

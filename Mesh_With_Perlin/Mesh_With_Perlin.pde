@@ -1,3 +1,5 @@
+//Coded by Huglio
+
 class Mesh {
   PVector pos;
   float sizex;
@@ -9,7 +11,7 @@ class Mesh {
   float yoff = 0;
   float xspeed = .01;
   float yspeed = -.01;
-  float noiseSize = .04;
+  float noiseSize = .003;
   float noiseWeight = 600;
   
   Mesh(float x, float y, int cx, int cy) {
@@ -29,10 +31,10 @@ class Mesh {
       for (int j = 0; j < cy; j++) {
         fill(255);
         beginShape(QUADS);
-        vertex(i * quadxsize - sizex / 2, noiseWeight * noise(xoff + i * noiseSize, yoff + j * noiseSize), j * quadysize - sizey / 2);
-        vertex(i * quadxsize - sizex / 2, noiseWeight * noise(xoff + i * noiseSize, yoff + (j + 1) * noiseSize), (j + 1) * quadysize - sizey / 2);
-        vertex((i + 1) * quadxsize - sizex / 2, noiseWeight * noise(xoff + (i + 1) * noiseSize, yoff + (j + 1) * noiseSize), (j + 1) * quadysize - sizey / 2);
-        vertex((i + 1) * quadxsize - sizex / 2, noiseWeight * noise(xoff + (i + 1) * noiseSize, yoff + j * noiseSize), j * quadysize - sizey / 2);
+        vertex(i * quadxsize - sizex / 2, noiseWeight * noise(xoff + i * noiseSize * quadxsize, yoff + j * noiseSize * quadxsize), j * quadysize - sizey / 2);
+        vertex(i * quadxsize - sizex / 2, noiseWeight * noise(xoff + i * noiseSize * quadxsize, yoff + (j + 1) * noiseSize * quadxsize), (j + 1) * quadysize - sizey / 2);
+        vertex((i + 1) * quadxsize - sizex / 2, noiseWeight * noise(xoff + (i + 1) * noiseSize * quadxsize, yoff + (j + 1) * noiseSize * quadxsize), (j + 1) * quadysize - sizey / 2);
+        vertex((i + 1) * quadxsize - sizex / 2, noiseWeight * noise(xoff + (i + 1) * noiseSize * quadxsize, yoff + j * noiseSize * quadxsize), j * quadysize - sizey / 2);
         endShape();
       }
   }
@@ -45,11 +47,12 @@ class Mesh {
 
 Mesh mesh;
 void setup() {
-  size(500, 500, P3D);
+  size(1000, 600, P3D);
   mesh = new Mesh(1000, 1000, 50, 50);
-  camera(700, 800, 700, 0, 0, 0, 1, 1, 1);
+  camera(700, 800, 700, 0, 0, 0, 0, -1, 0);
 }
 
+boolean up = false;
 void draw() {
   background(0);
   mesh.update();
