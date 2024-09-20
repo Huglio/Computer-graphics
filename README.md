@@ -1,6 +1,18 @@
 <span style="color:blue"> Some of my projects </span>.
 
 ```diff
++ Fourier Series
+```
+![Alt Text](https://github.com/Huglio/Computer-graphics/blob/main/FourierSeries/FourierGif.gif)
+
+```diff
++ TSP Problem
+```
+
+![Alt Text](https://github.com/Huglio/Computer-graphics/blob/main/TSP_Project/TSPGif.gif)
+![Alt Text](https://github.com/Huglio/Computer-graphics/blob/main/TSP_Project/TSPGifComplex.gif)
+
+```diff
 + Physics Play
 ```
 
